@@ -1,8 +1,8 @@
 package board
 
 import (
+	"boardgames/rows"
 	"strings"
-	"tictactoe/rows"
 )
 
 type Board []rows.Row
