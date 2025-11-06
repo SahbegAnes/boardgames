@@ -2,6 +2,7 @@ package board
 
 import (
 	"boardgames/rows"
+	"fmt"
 	"strings"
 )
 
@@ -11,7 +12,9 @@ type Board []rows.Row
 // Liefert ein neues `Board` zurück, das mit dem Zeichen gefüllt ist.
 func New(height, width int, fill string) Board {
 	board := make(Board, height)
-	// TODO
+	for i := 0; i < height; i++ {
+		board[i] = rows.New(width, fill)
+	}
 	return board
 }
 
@@ -19,22 +22,29 @@ func New(height, width int, fill string) Board {
 // Die Zeilen sind durch Trenner der Form `+---+---+---+` getrennt.
 func (b Board) String() string {
 	rowStrings := make([]string, len(b))
-	divider := "\n"
-	// TODO
-	return strings.Join(rowStrings, divider)
+	divider := fmt.Sprintf("\n%s+\n", strings.Repeat("+---", len(b)))
+
+	for i, row := range b {
+		rowStrings[i] = row.String()
+	}
+
+	return fmt.Sprintf("%s%s%s", divider, strings.Join(rowStrings, divider), divider)
 }
 
 // Row erwartet eine Zeilennummer und liefert diese Zeile zurück.
 func (b Board) Row(row int) rows.Row {
 	// TODO
-	return rows.Row{}
+	return b[row]
 }
 
 // Set erwartet eine Spaltennummer und liefert diese Spalte zurück.
 // Der Rückgabetype ist Row, da Zeilen und Spalten gleich sind.
 func (b Board) Col(col int) rows.Row {
 	c := make(rows.Row, len(b))
-	// TODO
+	for i := range b {
+		c[i] = b[i][col]
+	}
+
 	return c
 }
 
@@ -43,19 +53,35 @@ func (b Board) Col(col int) rows.Row {
 // Die Diagonalennummer ist 0 für die Hauptdiagonale und 1 für die Nebendiagonale.
 func (b Board) Diag(diag int) rows.Row {
 	d := make(rows.Row, len(b))
-	// TODO
+	if diag == 0 {
+		for i := range b {
+			d[i] = b[i][i]
+		}
+	}
+	if diag == 1 {
+		for l := range b {
+			d[l] = b[l][len(b)-1-l]
+		}
+	}
 	return d
 }
 
 // Set erwartet eine Zeilen- und eine Spaltennummer und ein Zeichen.
 // Setzt das Zeichen an die entsprechende Stelle.
 func (b Board) Set(row, col int, fill string) {
-	// TODO
+	b[row][col] = fill
 }
 
 // Full gibt `true` zurück, wenn das Board voll ist.
 func (b Board) Full() bool {
-	// TODO
+	for i := range b {
+		for j := range b[i] {
+			if b[i][j] != "X" && b[i][j] != "O" {
+				return false
+			}
+
+		}
+	}
 	return true
 }
 
