@@ -88,21 +88,43 @@ func (b Board) Full() bool {
 // RowContainsOnly erwartet eine Zeilennummer und ein Zeichen.
 // Gibt `true` zurück, wenn die Zeile nur aus dem Zeichen besteht.
 func (b Board) RowContainsOnly(row int, s string) bool {
-	// TODO
-	return false
+	for i := range b[row] {
+		if b[row][i] != s {
+			return false
+		}
+	}
+	return true
 }
 
 // ColContainsOnly erwartet eine Spaltennummer und ein Zeichen.
 // Gibt `true` zurück, wenn die Spalte nur aus dem Zeichen besteht.
 func (b Board) ColContainsOnly(col int, s string) bool {
-	// TODO
-	return false
+	for i := range b {
+		if b[i][col] != s {
+			return false
+		}
+	}
+	return true
 }
 
 // DiagContainsOnly erwartet eine Diagonalennummer und ein Zeichen.
 // Gibt `true` zurück, wenn die Diagonale nur aus dem Zeichen besteht.
 // Die Diagonalennummer ist 0 für die Hauptdiagonale und 1 für die Nebendiagonale.
 func (b Board) DiagContainsOnly(diag int, s string) bool {
-	// TODO
-	return false
+	if diag == 0 {
+		for i := range b {
+			if b[i][i] != s {
+				return false
+			}
+		}
+	}
+	if diag == 1 {
+		for l := range b {
+			if b[l][len(b)-1-l] != s {
+				return false
+			}
+		}
+	}
+
+	return true
 }
